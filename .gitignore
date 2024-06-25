@@ -1,0 +1,8 @@
+# node modules
+*/node_modules/*
+
+# credentials
+*.env
+
+# local note
+list

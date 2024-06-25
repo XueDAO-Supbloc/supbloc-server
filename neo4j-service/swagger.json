@@ -1,0 +1,603 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Supbloc API",
+    "version": "1.0"
+  },
+  "servers": [{ "url": "/api" }],
+  "components": {
+    "schemas": {
+      "product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "vanilla"
+          },
+          "productId": {
+            "type": "string",
+            "description": "unique id of length 20",
+            "example": "afkQgFCms7u6dZUIqR1P"
+          },
+          "supplierId": {
+            "type": "string",
+            "description": "supplier of the product",
+            "example": "kKdes2yZ6ZOLzuLz"
+          }
+        }
+      },
+      "supplier": {
+        "type": "object",
+        "properties": {
+          "supplierId": {
+            "type": "string",
+            "description": "unique id of length 16",
+            "example": "kKdes2yZ6ZOLzuLz"
+          },
+          "supplierName": {
+            "type": "string",
+            "example": "MeguFire"
+          },
+          "safety": {
+            "type": "string",
+            "description": "safety level of supplier",
+            "enum": ["safe", "unsafe"],
+            "example": "safe"
+          },
+          "stamp": {
+            "type": "number",
+            "description": "time stamp when a supplier is added",
+            "example": "17854269"
+          }
+        }
+      },
+      "transaction": {
+        "type": "object",
+        "required": ["buyerId", "sellerId", "productId", "date"],
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "unique id of length 16",
+            "example": "mkTU6mjX57Oku5koG6hN"
+          },
+          "buyerId": {
+            "type": "string",
+            "description": "supplierId of buyer",
+            "example": "GP_zq8TVoZrohVl6"
+          },
+          "sellerId": {
+            "type": "string",
+            "description": "supplierId of seller",
+            "example": "GP_zq8TVoZrohVl6"
+          },
+          "productId": {
+            "type": "string",
+            "description": "productId of product",
+            "example": "UPrU23nz3LRcAmIXWhyU"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "transaction date",
+            "example": "2017-07-21T17:32:28Z"
+          },
+          "stamp": {
+            "type": "number",
+            "description": "time stamp when a transaction is added",
+            "example": "17854269"
+          }
+        }
+      },
+      "validity": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "description": "The result if generated snapshot is the same as the old one",
+            "example": "YES/NO"
+          },
+          "cid": {
+            "type": "string",
+            "description": "The cid of the old snapshot",
+            "example": "abcd?"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/product": {
+      "get": {
+        "tags": ["product"],
+        "summary": "Get product by id",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/product/properties/productId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/product/all": {
+      "get": {
+        "tags": ["product"],
+        "summary": "Get all products before given date",
+        "responses": {
+          "200": {
+            "description": "Products fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/product"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction": {
+      "post": {
+        "tags": ["transaction"],
+        "summary": "Create a new transaction",
+        "parameters": [
+          {
+            "name": "buyerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/buyerId"
+            }
+          },
+          {
+            "name": "sellerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/sellerId"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/productId"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "transactionId": {
+                      "$ref": "#/components/schemas/transaction/properties/transactionId"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["transaction"],
+        "summary": "Get transaction by id",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/transactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/transaction"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["transaction"],
+        "summary": "Delete transaction by id",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/transactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "transaction deleted"
+          }
+        }
+      }
+    },
+    "/transaction/all": {
+      "get": {
+        "tags": ["transaction"],
+        "summary": "Get all transactions before given date",
+        "parameters": [
+          {
+            "name": "date",
+            "description": "Only include transactions before the date",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Suppliers fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transaction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supplier": {
+      "post": {
+        "tags": ["supplier"],
+        "summary": "Create a new supplier",
+        "parameters": [
+          {
+            "name": "supplierName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/supplierName"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "supplierId": {
+                      "$ref": "#/components/schemas/supplier/properties/supplierId"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["supplier"],
+        "summary": "Get supplier by id",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/supplierId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/supplier"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["supplier"],
+        "summary": "Update supplier's safety level by id",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/supplierId"
+            }
+          },
+          {
+            "name": "safety",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/safety"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["supplier"],
+        "summary": "Delete supplier by id",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/supplierId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier deleted"
+          }
+        }
+      }
+    },
+    "/supplier/all": {
+      "get": {
+        "tags": ["supplier"],
+        "summary": "Get all suppliers before given date",
+        "parameters": [
+          {
+            "name": "date",
+            "description": "Only include suppliers before the date",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Suppliers fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/supplier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supply-chain": {
+      "get": {
+        "tags": ["supply chain"],
+        "summary": "Get specific supply chain",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/supplierId"
+            }
+          },
+          {
+            "name": "productId",
+            "description": "If specify, exclude the transaction without product from supplier",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/product/properties/productId"
+            }
+          },
+          {
+            "name": "flow",
+            "description": "flow when searching a supply chain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["upstream", "downstream", "both"],
+              "example": "upstream"
+            }
+          },
+          {
+            "name": "date",
+            "description": "Only include transactions after the date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Suppliers fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/supplier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["supply chain"],
+        "summary": "Update safety level in specific supply chain",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/supplierId"
+            }
+          },
+          {
+            "name": "productId",
+            "description": "Only include transactions with product",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/product/properties/productId"
+            }
+          },
+          {
+            "name": "date",
+            "description": "Only include transactions after the date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/transaction/properties/date"
+            }
+          },
+          {
+            "name": "flow",
+            "description": "flow when searching a supply chain",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["upstream", "downstream", "both"],
+              "example": "upstream"
+            }
+          },
+          {
+            "name": "safety",
+            "description": "Specific safety level to set",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/supplier/properties/safety"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Supplier updated"
+          }
+        }
+      }
+    },
+    "/verify": {
+      "get": {
+        "tags": ["verify"],
+        "summary": "Verify if records in old snapshot are valid",
+        "responses": {
+          "200": {
+            "description": "Result of verifying process",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/validity/properties/result"
+                    },
+                    "cid": {
+                      "$ref": "#/components/schemas/validity/properties/cid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["verify"],
+        "summary": "Resume database with specific version of snapshot",
+        "parameters": [
+          {
+            "name": "cid",
+            "description": "cid of the snapshot that will be used to recover data",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/validity/properties/cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Result of resuming process",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/validity/properties/result"
+                    },
+                    "cid": {
+                      "$ref": "#/components/schemas/validity/properties/cid"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

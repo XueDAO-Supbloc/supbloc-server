@@ -1,0 +1,70 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Supbloc Aptos API",
+        "version": "1.0"
+    },
+    "servers": [{ "url": "/api" }],
+    "components": {},
+    "paths": {
+        "/nonce": {
+            "get": {
+                "summary": "Get nonce of generated key",
+                "tags": ["Key"],
+                "responses": {
+                    "200": {
+                        "description": "Key generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "nonce": {
+                                            "type": "string",
+                                            "example": "6184230280157587816724520840982733704241627937507739307001900355953529637520"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/keylessAccount": {
+            "get": {
+                "summary": "Get a keyless account",
+                "tags": ["Account"],
+                "parameters": [
+                    {
+                        "name": "id_token",
+                        "in": "query",
+                        "description": "id token of oauth callback",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "type": "string",
+                                            "example": "484565102b616a7da79f6a74142e31932ae84cf5f59d4d103aac22365e376521"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

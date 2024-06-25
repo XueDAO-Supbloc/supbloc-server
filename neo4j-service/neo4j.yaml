@@ -1,0 +1,7 @@
+runtime: nodejs20
+service: neo4j-service
+env_variables:
+  NODE_ENV: production
+handlers:
+  - url: /.*
+    script: auto
