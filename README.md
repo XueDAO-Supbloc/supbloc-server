@@ -5,7 +5,7 @@ transparent and verifiable food supply chain tracking system built with web2 and
 ## Tech Stack
 - **server**: nodejs, express
 - **db**: Neo4j
-- **decentralized** db: ipfs
+- **decentralized db**: ipfs
 - **blockchain**: Aptos
 
 ## Neo4j Database API
