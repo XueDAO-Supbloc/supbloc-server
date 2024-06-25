@@ -2,7 +2,7 @@
 transparent and verifiable food supply chain tracking system built with web2 and web3 technologies  
 運用 web2 和 web3 技術打造的透明且可驗證的食物供應鏈追蹤系統
 
-## tech stack
+## Tech Stack
 - **server**: nodejs, express
 - **db**: Neo4j
 - **decentralized** db: ipfs
