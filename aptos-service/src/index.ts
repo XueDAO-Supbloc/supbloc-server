@@ -6,12 +6,13 @@ import fs from "fs";
 
 import { router } from "./api";
 import swaggerDocument from "./swagger.json";
-import { keyfilepath } from "./constant";
+import { keyfilepath, accountfilepath } from "./constant";
 
 dotenv.config();
 
 try {
   fs.writeFileSync(keyfilepath, "", { flag: 'a' });
+  fs.writeFileSync(accountfilepath, "", { flag: 'a' });
 } catch (e) {
   console.log(e);
 }

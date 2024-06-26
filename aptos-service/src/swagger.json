@@ -5,7 +5,30 @@
     "version": "1.0"
   },
   "servers": [{ "url": "/api" }],
-  "components": {},
+  "components": {
+    "schemas": {
+      "NFTcontent": {
+        "type": "object",
+        "properties": {
+          "productID": {
+            "type": "string",
+            "description": "product ID to be mint"
+          },
+          "productName": {
+            "type": "string",
+            "description": "product name of the product ID"
+          },
+          "supplierIDs": {
+            "type": "array",
+            "description": "supplier IDs of the product ID",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
   "paths": {
     "/nonce": {
       "get": {
@@ -62,6 +85,37 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/nft": {
+      "post": {
+        "summary": "Mint a new NFT",
+        "tags": ["NFT"],
+        "parameters": [
+          {
+            "name": "address",
+            "description": "address of the account to mint NFT",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "NFTcontent",
+            "description": "content to be mint as NFT",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/NFTcontent"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "NFT minted successfully"
           }
         }
       }

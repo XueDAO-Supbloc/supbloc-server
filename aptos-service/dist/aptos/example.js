@@ -11,12 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.example = void 0;
 const ts_sdk_1 = require("@aptos-labs/ts-sdk");
-const constant_1 = require("./constant");
+const aptosConstant_1 = require("./aptosConstant");
 const ALICE_INITIAL_BALANCE = 100000000;
 const BOB_INITIAL_BALANCE = 0;
 const TRANSFER_AMOUNT = 1000000;
 const balance = (name, accountAddress, versionToWaitFor) => __awaiter(void 0, void 0, void 0, function* () {
-    const amount = yield constant_1.entry.getAccountAPTAmount({
+    const amount = yield aptosConstant_1.entry.getAccountAPTAmount({
         accountAddress,
         minimumLedgerVersion: versionToWaitFor,
     });
@@ -32,7 +32,7 @@ const example = (alice) => __awaiter(void 0, void 0, void 0, function* () {
     // Fund the accounts
     console.log("\n=== Funding accounts ===\n");
     // Fund alice account
-    yield constant_1.entry.fundAccount({
+    yield aptosConstant_1.entry.fundAccount({
         accountAddress: alice.accountAddress,
         amount: ALICE_INITIAL_BALANCE,
     });
@@ -46,13 +46,13 @@ const example = (alice) => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("Bob's balance is incorrect");
     // Transfer between users
     console.log(`\n=== Transfer ${TRANSFER_AMOUNT} from Alice to Bob ===\n`);
-    const transaction = yield constant_1.entry.transferCoinTransaction({
+    const transaction = yield aptosConstant_1.entry.transferCoinTransaction({
         sender: alice.accountAddress,
         recipient: bob.accountAddress,
         amount: TRANSFER_AMOUNT,
     });
-    const pendingTxn = yield constant_1.entry.signAndSubmitTransaction({ signer: alice, transaction });
-    const response = yield constant_1.entry.waitForTransaction({ transactionHash: pendingTxn.hash });
+    const pendingTxn = yield aptosConstant_1.entry.signAndSubmitTransaction({ signer: alice, transaction });
+    const response = yield aptosConstant_1.entry.waitForTransaction({ transactionHash: pendingTxn.hash });
     console.log(`Committed transaction: ${response.hash}`);
     console.log("\n=== Balances after transfer ===\n");
     const newAliceBalance = yield balance("Alice", alice.accountAddress, BigInt(response.version));
