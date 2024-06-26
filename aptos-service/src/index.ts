@@ -6,7 +6,7 @@ import fs from "fs";
 
 import { router } from "./api";
 import swaggerDocument from "./swagger.json";
-import { keyfilepath } from "./aptos/constant";
+import { keyfilepath } from "./constant";
 
 dotenv.config();
 
@@ -18,14 +18,14 @@ try {
 
 // Start the server
 const app: Express = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use("/api", router);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_, res: Response) => {
   res.send("please go to /api-docs to see the documentation");
 });
 

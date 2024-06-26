@@ -20,12 +20,12 @@ catch (e) {
 }
 // Start the server
 const app = (0, express_1.default)();
-const port = process.env.PORT || 3000;
+const port = 3000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use("/api", api_1.router);
 app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
     res.send("please go to /api-docs to see the documentation");
 });
 app.listen(port, () => {

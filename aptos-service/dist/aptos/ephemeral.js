@@ -14,6 +14,7 @@ const constant_1 = require("./constant");
 const storeEphemeralKeyPair = (ephemeralKeyPair) => {
     // Retrieve the current ephemeral key pairs from localStorage
     const keyPairs = (0, exports.getLocalEphemeralKeyPairs)();
+    console.log(keyPairs);
     // Store the new ephemeral key pair in localStorage
     keyPairs[ephemeralKeyPair.nonce] = ephemeralKeyPair;
     // Store the updated ephemeral key pairs in a JSON file

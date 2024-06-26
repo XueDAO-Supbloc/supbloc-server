@@ -16,7 +16,7 @@ function StartServer() {
   app.use("/api", apiRouter);
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-  const PORT = 4000;
+  const PORT = process.env.PORT || 4000;
 
   app.get("/", (req, res) => {
     res.send("please go to /api-docs to see the documentation");

@@ -1,6 +1,6 @@
 import { EphemeralKeyPair } from '@aptos-labs/ts-sdk';
 import fs from 'fs';
-import { keyfilepath } from './constant';
+import { keyfilepath } from '../constant';
 
 /**
  * Stored ephemeral key pairs in localStorage (nonce -> ephemeralKeyPair)
@@ -16,6 +16,8 @@ export const storeEphemeralKeyPair = (
 ): void => {
   // Retrieve the current ephemeral key pairs from localStorage
   const keyPairs = getLocalEphemeralKeyPairs();
+
+  console.log(keyPairs);
 
   // Store the new ephemeral key pair in localStorage
   keyPairs[ephemeralKeyPair.nonce] = ephemeralKeyPair;

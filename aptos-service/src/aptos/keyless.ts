@@ -1,11 +1,12 @@
-import { EphemeralKeyPair, KeylessAccount, Account } from '@aptos-labs/ts-sdk';
-import { storeEphemeralKeyPair, getLocalEphemeralKeyPair } from './ephemeral';
+import { EphemeralKeyPair, KeylessAccount } from '@aptos-labs/ts-sdk';
 import { jwtDecode } from 'jwt-decode';
-import { entry } from './constant';
 import fs from 'fs';
 
-// init json file
-// fs.writeFileSync('./ephemeral-key-pairs.json', '{}');
+import { storeEphemeralKeyPair, getLocalEphemeralKeyPair } from './ephemeralUtils';
+import { entry } from './aptosConstant';
+import { encodeAccount } from './keylessAccountUtils';
+import { accountfilepath } from '../constant';
+
 
 /**
  * Generate a new ephemeral key pair, and return the nonce.
@@ -38,7 +39,9 @@ export async function getKeylessAccount(jwt: string): Promise<KeylessAccount | n
 
   console.log("[Aptos] Derived keyless account:\n", keylessAccount);
 
-  fs.writeFileSync('./account.json', JSON.stringify(keylessAccount));
+  // Save the keyless account to a JSON file
+  const str = encodeAccount(keylessAccount);
+  fs.writeFileSync(accountfilepath, str);
 
   return keylessAccount;
 }

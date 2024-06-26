@@ -19,6 +19,7 @@ const ephemeral_1 = require("./ephemeral");
 const jwt_decode_1 = require("jwt-decode");
 const constant_1 = require("./constant");
 const fs_1 = __importDefault(require("fs"));
+const example_1 = require("./example");
 // init json file
 // fs.writeFileSync('./ephemeral-key-pairs.json', '{}');
 /**
@@ -45,7 +46,38 @@ function getKeylessAccount(jwt) {
             ephemeralKeyPair,
         });
         console.log("[Aptos] Derived keyless account:\n", keylessAccount);
-        fs_1.default.writeFileSync('./account.json', JSON.stringify(keylessAccount));
+        const str = encodeAccount(keylessAccount);
+        const account = decodeAccount(str);
+        (0, example_1.example)(account);
+        fs_1.default.writeFileSync('./account.json', str);
         return keylessAccount;
     });
 }
+function encodeAccount(account) {
+    return JSON.stringify(account, (_, e) => {
+        if (e instanceof Uint8Array)
+            return { __type: "Uint8Array", value: Array.from(e) };
+        if (e instanceof ts_sdk_1.KeylessAccount)
+            return { __type: "KeylessAccount", value: e.bcsToBytes() };
+        return e;
+    });
+}
+function decodeAccount(account) {
+    return JSON.parse(account, (_, e) => {
+        if (e && e.__type === "Uint8Array")
+            return new Uint8Array(e.value);
+        if (e && e.__type === "KeylessAccount")
+            return ts_sdk_1.KeylessAccount.fromBytes(e.value);
+        return e;
+    });
+}
+// export const decodeEphemeralKeyPairs = (
+//   encodedEphemeralKeyPairs: string,
+// ): StoredEphemeralKeyPairs =>
+//   JSON.parse(encodedEphemeralKeyPairs, (_, e) => {
+//     if (e && e.__type === "bigint") return BigInt(e.value);
+//     if (e && e.__type === "Uint8Array") return new Uint8Array(e.value);
+//     if (e && e.__type === "EphemeralKeyPair")
+//       return EphemeralKeyPairEncoding.decode(e);
+//     return e;
+//   });

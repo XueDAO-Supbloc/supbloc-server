@@ -1,5 +1,5 @@
 import { Account, AccountAddress } from "@aptos-labs/ts-sdk";
-import { entry } from "./constant";
+import { entry } from "./aptosConstant";
 
 const ALICE_INITIAL_BALANCE = 100_000_000;
 const BOB_INITIAL_BALANCE = 0;
