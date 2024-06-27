@@ -77,3 +77,21 @@ exports.router.post("/nft", (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(500).send(err);
     }
 }));
+exports.router.get("/nft", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const address = req.query.address;
+        const account = yield (0, keylessUtils_1.findAccountbyAddress)(address);
+        if (!account) {
+            res.status(404).send("Account not found");
+            return;
+        }
+        const nfts = yield (0, nft_1.getNFTs)(account);
+        console.log(nfts);
+        // response
+        res.write(JSON.stringify(nfts));
+        res.end();
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
+}));

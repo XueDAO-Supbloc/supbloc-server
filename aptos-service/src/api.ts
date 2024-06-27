@@ -2,7 +2,7 @@ import express from 'express';
 import { Account } from "@aptos-labs/ts-sdk"
 
 import { genEphemeralKeyPair, getKeylessAccount } from './aptos/keyless';
-import { NFTcontent, mintNFT } from './aptos/nft';
+import { NFTcontent, getNFTs, mintNFT } from './aptos/nft';
 import { findAccountbyAddress } from './aptos/keylessUtils';
 
 export const router = express.Router();
@@ -71,6 +71,29 @@ router.post("/nft", async (req, res) => {
     res.write(JSON.stringify({
       "status": "success"
     }));
+    res.end();
+  }
+  catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+router.get("/nft", async (req, res) => {
+  try {
+    const address = req.query.address as string;
+
+    const account = await findAccountbyAddress(address);
+    if (!account) {
+      res.status(404).send("Account not found");
+      return;
+    }
+
+    const nfts = await getNFTs(account);
+
+    console.log(nfts);
+
+    // response
+    res.write(JSON.stringify(nfts));
     res.end();
   }
   catch (err) {

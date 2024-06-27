@@ -12,18 +12,21 @@
         "properties": {
           "productID": {
             "type": "string",
-            "description": "product ID to be mint"
+            "description": "product ID to be mint",
+            "example": "productID1"
           },
           "productName": {
             "type": "string",
-            "description": "product name of the product ID"
+            "description": "product name of the product ID",
+            "example": "productName1"
           },
           "supplierIDs": {
             "type": "array",
             "description": "supplier IDs of the product ID",
             "items": {
               "type": "string"
-            }
+            },
+            "example": ["supplierID3", "supplierID4"]
           }
         }
       }
@@ -101,7 +104,8 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "41f37335d7608ad6382d91700284eb9ae2292384fff1d0118e20ed816a419ab1"
           },
           {
             "name": "NFTcontent",
@@ -116,6 +120,37 @@
         "responses": {
           "200": {
             "description": "NFT minted successfully"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get NFTs of an account",
+        "tags": ["NFT"],
+        "parameters": [
+          {
+            "name": "address",
+            "description": "address of the account",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "41f37335d7608ad6382d91700284eb9ae2292384fff1d0118e20ed816a419ab1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "NFTs fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NFTcontent"
+                  }
+                }
+              }
+            }
           }
         }
       }

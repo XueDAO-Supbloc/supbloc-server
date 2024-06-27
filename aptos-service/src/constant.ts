@@ -1,3 +1,4 @@
+// Set false when deploying to GCP
 const local = true;
 
 export const keyfilepath = local ? './ephemeral-key-pairs.json' : '/tmp/ephemeral-key-pairs.json';
