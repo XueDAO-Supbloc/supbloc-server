@@ -12,6 +12,7 @@ router.get("/nonce", (req, res) => {
     const ephemeralKeyPair = genEphemeralKeyPair();
 
     // response
+    res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify({
       "nonce": ephemeralKeyPair.nonce
     }));
@@ -36,6 +37,7 @@ router.get("/keylessAccount", async (req, res) => {
     const address = Buffer.from(keylessAccount.accountAddress.data).toString('hex');
 
     // response
+    res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify({
       "address": address
     }));
@@ -68,9 +70,7 @@ router.post("/nft", async (req, res) => {
     await mintNFT(account, content);
 
     // response
-    res.write(JSON.stringify({
-      "status": "success"
-    }));
+    res.status(200).send("NFT added");
     res.end();
   }
   catch (err) {
@@ -93,6 +93,7 @@ router.get("/nft", async (req, res) => {
     console.log(nfts);
 
     // response
+    res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify(nfts));
     res.end();
   }

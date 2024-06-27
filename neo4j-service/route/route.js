@@ -27,7 +27,6 @@ router.post("/transaction", async (req, res) => {
 
     // response
     res.write(result);
-
     res.end();
   }
   catch (err) {
@@ -54,7 +53,6 @@ router.get("/transaction", async (req, res) => {
     }
     // response
     res.write(result);
-
     res.end();
   }
   catch (err) {

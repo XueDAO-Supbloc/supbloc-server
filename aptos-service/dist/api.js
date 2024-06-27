@@ -22,6 +22,7 @@ exports.router.get("/nonce", (req, res) => {
     try {
         const ephemeralKeyPair = (0, keyless_1.genEphemeralKeyPair)();
         // response
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({
             "nonce": ephemeralKeyPair.nonce
         }));
@@ -41,6 +42,7 @@ exports.router.get("/keylessAccount", (req, res) => __awaiter(void 0, void 0, vo
         }
         const address = Buffer.from(keylessAccount.accountAddress.data).toString('hex');
         // response
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({
             "address": address
         }));
@@ -68,9 +70,7 @@ exports.router.post("/nft", (req, res) => __awaiter(void 0, void 0, void 0, func
         }
         yield (0, nft_1.mintNFT)(account, content);
         // response
-        res.write(JSON.stringify({
-            "status": "success"
-        }));
+        res.status(200).send("NFT added");
         res.end();
     }
     catch (err) {
@@ -88,6 +88,7 @@ exports.router.get("/nft", (req, res) => __awaiter(void 0, void 0, void 0, funct
         const nfts = yield (0, nft_1.getNFTs)(account);
         console.log(nfts);
         // response
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify(nfts));
         res.end();
     }
