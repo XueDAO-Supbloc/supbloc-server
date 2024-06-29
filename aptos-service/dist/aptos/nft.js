@@ -23,7 +23,7 @@ function mintNFT(account, content) {
         try {
             yield aptosConstant_1.entry.fundAccount({
                 accountAddress: account.accountAddress,
-                amount: 1000000,
+                amount: 1000000000,
             });
         }
         catch (e) {

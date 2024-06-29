@@ -1,0 +1,15 @@
+[package]
+name = "snap_repo"
+version = "1.0.0"
+authors = []
+
+[addresses]
+snap_repo_addr = "7ac70a2790d130df3b95c7b98b051b0744fec0289c39e2fd9b3da32cc4fe8421"
+[dev-addresses]
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "devnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dev-dependencies]

@@ -1,2 +1,4 @@
-assests/
 node_modules/
+.aptos/
+aptos-cli/
+snapshots/

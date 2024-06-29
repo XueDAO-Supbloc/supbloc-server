@@ -20,7 +20,7 @@ export async function mintNFT(account: Account, content: NFTcontent) {
   try {
     await entry.fundAccount({
       accountAddress: account.accountAddress,
-      amount: 1_000_000,
+      amount: 1_000_000_000,
     });
   }
   catch (e) {
