@@ -296,7 +296,7 @@ router.get("/product", async (req, res) => {
         product = {
           productName: products[productId],
           productId: productId,
-          supplierName: supplier,
+          supplierId: SUPPLIER_LIST[supplier].supplierID,
         };
       }
     }

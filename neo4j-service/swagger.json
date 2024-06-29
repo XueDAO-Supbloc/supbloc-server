@@ -477,9 +477,19 @@
             "name": "productId",
             "description": "Only include transactions with product",
             "in": "query",
-            "required": true,
             "schema": {
               "$ref": "#/components/schemas/product/properties/productId"
+            }
+          },
+          {
+            "name": "flow",
+            "description": "flow when searching a supply chain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["upstream", "downstream", "both"],
+              "example": "upstream"
             }
           },
           {
@@ -489,16 +499,6 @@
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/transaction/properties/date"
-            }
-          },
-          {
-            "name": "flow",
-            "description": "flow when searching a supply chain",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["upstream", "downstream", "both"],
-              "example": "upstream"
             }
           },
           {

@@ -12,5 +12,4 @@ export const NEO4J_USERNAME = process.env.NEO4J_USERNAME
 export const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD
 export const MAX_PATH_LENGTH = 100000
 export const SNAPSHOT_DIR = './snapshots'
-// Set to false when deploy on GCP
 export const IPFS_SET = false

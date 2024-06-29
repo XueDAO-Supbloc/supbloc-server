@@ -5,14 +5,14 @@ const client = create()
 
 export function InitIpfsNode() {
   return new Promise((resolve, reject) => {
-    const ipfs = spawn("ipfs", ["init"]);
+    const ipfs = spawn("./node_modules/kubo/bin/ipfs", ["init"]);
     resolve("IPFS node initialized");
   });
 }
 
 export function StartIpfsNode() {
   return new Promise((resolve, reject) => {
-    const ipfs = spawn("ipfs", ["daemon"]);
+    const ipfs = spawn("./node_modules/kubo/bin/ipfs", ["daemon"]);
     ipfs.stdout.on("data", (data) => {
       if (data.toString().includes("Daemon is ready")) {
         resolve("IPFS node is ready");
