@@ -4,9 +4,10 @@ import ModService from "../services/mod.service.js";
 import { getDriver } from "../src/neo4j.js";
 import QueryService from "../services/query.service.js";
 import { logger } from "../src/logger.js";
-import { SNAPSHOT_DIR, PROCUCT_NAMES, IPFS_SET } from "../src/constants.js";
+import { SNAPSHOT_DIR, IPFS_SET } from "../src/constants.js";
 import { appendFileSync, unlinkSync, linkSync, openSync, closeSync, readFileSync, existsSync } from 'fs';
 import { UploadIpfs } from "../ipfs/ipfs_api.js";
+import { SUPPLIER_LIST } from "../src/supplierList.js";
 
 const router = express.Router();
 
@@ -286,7 +287,20 @@ router.put("/supply-chain", async (req, res) => {
 // get product info by id
 router.get("/product", async (req, res) => {
   try {
-    const product = PROCUCT_NAMES[req.query.productId];
+    let product;
+    const productId = req.query.productId;
+
+    for (const supplier in SUPPLIER_LIST) {
+      const products = SUPPLIER_LIST[supplier].products;
+      if (products.hasOwnProperty(productId)) {
+        product = {
+          productName: products[productId],
+          productId: productId,
+          supplierName: supplier,
+        };
+      }
+    }
+
     if (!product) {
       res.status(404).send("Product not found");
       return;
@@ -295,22 +309,12 @@ router.get("/product", async (req, res) => {
     console.log(product);
 
     // response
+    res.setHeader("Content-Type", "application/json");
     res.write(JSON.stringify(product));
     res.end();
   }
   catch (err) {
     res.status(500).send(err);
-  }
-});
-
-router.get("/product/all", async (req, res) => {
-  try {
-    // response
-    res.write(JSON.stringify(PROCUCT_NAMES));
-    res.end();
-  }
-  catch (err) {
-    res.status
   }
 });
 

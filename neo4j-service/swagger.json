@@ -134,27 +134,6 @@
         }
       }
     },
-    "/product/all": {
-      "get": {
-        "tags": ["product"],
-        "summary": "Get all products before given date",
-        "responses": {
-          "200": {
-            "description": "Products fetched",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/product"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/transaction": {
       "post": {
         "tags": ["transaction"],
